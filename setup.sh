@@ -7,10 +7,10 @@
 # @Affiliation: Real-Time Operating System Laboratory, Seoul National University
 # @Created: 07/23/25
 # @Original Work: Based on minimal-litert-c repository (https://github.com/SNU-RTOS/minimal-litert-c)
-# @Modified by: GeonhaPark on 08/10/25
+# @Modified by: Namcheol Lee on 09/29/25
 # @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
 #
-# @Description: Setup script for RTCSA25 tutorial
+# @Description: Setup script
 #
 #-----------------------------------------------------------------------------------------------
 
@@ -72,14 +72,9 @@ sudo apt install -y libopencv-dev libjsoncpp-dev
 
 # install python packages into virtual environment
 echo "[INFO] Installing Python packages into .venv..."
-pip install tensorflow==2.12.0
+pip install onnx
+pip install ai-edge-torch
+pip install --upgrade ai-edge-torch
 
-######### Download ResNet50 ##########
+######### Install Netron ##########
 pip install netron
-
-cd ..
-# download ResNet50
-python3 model_downloader.py
-
-# convert resnet50.h5 to resnet50.tflie
-python3 model_h5_to_tflite.py

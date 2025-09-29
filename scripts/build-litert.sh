@@ -10,7 +10,7 @@
 # @Modified by: GeonhaPark on 08/10/25
 # @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
 #
-# @Description: LiteRT build script for RTCSA25 tutorial
+# @Description: LiteRT build script
 #
 #-----------------------------------------------------------------------------------------------
 

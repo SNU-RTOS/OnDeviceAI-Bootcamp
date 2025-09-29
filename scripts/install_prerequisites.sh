@@ -10,7 +10,7 @@
 # @Modified by: GeonhaPark on 08/26/25
 # @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
 #
-# @Description: Install script for RTCSA25 tutorial prerequisites
+# @Description: Script for installing prerequisites
 #
 #-----------------------------------------------------------------------------------------------
 

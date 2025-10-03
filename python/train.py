@@ -1,0 +1,42 @@
+# Import PyTorch, nn, and, optim
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Load dataset from torchvision.datasets
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+transform = transforms.ToTensor()
+train_data = datasets.MNIST(root = '../data', train=True, download=True, transform=transform)
+train_loader = DataLoader(train_data, batch_size=64, shuffle=True) # An iterable of (batch of inputs, answers)
+test_data = datasets.MNIST(root = '../data', train=False, download=True, transform=transform)
+test_loader = DataLoader(test_data, batch_size=64, shuffle=True) # An iterable of (batch of inputs, answers)
+
+# Create a model object
+from model import SimpleCNN
+
+model = SimpleCNN()
+
+# Create objects for backpropagation and gradient descent
+criterion = nn.CrossEntropyLoss() # Cross Entropy includes softmax
+optimizer = optim.SGD(model.parameters(), lr=1e-3)
+
+
+# Train
+epochs = 20
+for epoch in range(epochs):
+  for images, labels in train_loader:    # 60000 / 64 iterations in 1 epoch
+    optimizer.zero_grad()
+    pred = model(images.view(-1, 28*28)) # Flatten the input image
+    loss = criterion(pred, labels)       # softmax is included in the loss function
+    loss.backward()
+    optimizer.step()
+
+  if loss.item() < 0.5:
+    break
+
+  print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
+  
+# Save the model
+torch.save(model.state_dict(), "../models/simplecnn.pt")

@@ -41,7 +41,7 @@ echo "[INFO] ROOT_PATH: ${ROOT_PATH}"
 echo "[INFO] EXTERNAL_PATH: ${EXTERNAL_PATH}"
 echo "[INFO] LITERT_PATH: ${LITERT_PATH}"
 
-mkdir -p "${EXTERNAL_PATH}" "${ROOT_PATH}/inc" "${ROOT_PATH}/lib" "${ROOT_PATH}/obj"
+mkdir -p "${EXTERNAL_PATH}" "${ROOT_PATH}/inc" "${ROOT_PATH}/lib" "${ROOT_PATH}/obj" "${ROOT_PATH}/data"
 
 ########## Setup external sources ##########
 cd "${EXTERNAL_PATH}"
@@ -73,6 +73,7 @@ sudo apt install -y libopencv-dev libjsoncpp-dev
 # install python packages into virtual environment
 echo "[INFO] Installing Python packages into .venv..."
 pip install onnx
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 pip install ai-edge-torch
 pip install --upgrade ai-edge-torch
 

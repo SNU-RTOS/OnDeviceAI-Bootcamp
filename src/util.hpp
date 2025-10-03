@@ -38,64 +38,6 @@
 #include "tflite/kernels/register.h"
 #include "tflite/model.h"
 
-/* Data structures for pipelined inference */
-// Data container used to pass results between pipeline stages
-struct StagePayload {
-    int index;                           // Index of the input image (used for tracking)
-    std::vector<float> data;             // Flattened data of input/output tensors
-    std::vector<int> tensor_end_offsets; // Offsets marking the end of each tensor in the flattened data
-};
-
-// Thread-safe queue for passing data between threads
-template <typename T>
-class InterStageQueue
-{
-public:
-    void push(T item) // Push an item to the queue
-    {
-        std::unique_lock<std::mutex> lock(mutex);
-        queue.push(std::move(item));
-        lock.unlock();
-        cond_var.notify_one();
-    }
-
-    bool pop(T &item) // Pop an item from the queue
-    {
-        std::unique_lock<std::mutex> lock(mutex);
-        cond_var.wait(lock, [this]
-                      { return !queue.empty() || shutdown; });
-
-        if (shutdown && queue.empty())
-        {
-            return false;
-        }
-
-        item = std::move(queue.front());
-        queue.pop();
-        return true;
-    }
-
-    void signal_shutdown() // Signal that no more items will be pushed
-    {
-        std::unique_lock<std::mutex> lock(mutex);
-        shutdown = true;
-        lock.unlock();
-        cond_var.notify_all();
-    }
-
-    size_t size() // Get the number of items in the queue
-    {
-        std::unique_lock<std::mutex> lock(mutex);
-        return queue.size();
-    }
-
-private:
-    std::queue<T> queue; // C++ standard library queue for storing items
-    std::mutex mutex; // Mutex for synchronizing access to the queue
-    std::condition_variable cond_var; // Used to block 'pop' until an item is available
-    bool shutdown{false}; // Flag to indicate that no more items will be pushed
-};
-
 namespace util
 {
     // Alias for high-resolution clock and time point
@@ -131,13 +73,6 @@ namespace util
 
     // Calculate and print throughput for a given label
     void print_throughput(const std::string &label, size_t num_inputs);
-
-    //  Compare throughput between inference driver and pipelined inference driver
-    void compare_throughput(const std::string &label1, const std::string &label2, int num_images);
-
-    // Compare the ratio of the longest stage in pipelined inference to the E2E latency of a normal inference
-    void compare_latency(const std::vector<std::string> &stage_labels,
-                            const std::string &e2e_label);
 
     //*==========================================*/
 

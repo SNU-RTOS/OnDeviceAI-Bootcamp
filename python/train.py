@@ -38,5 +38,23 @@ for epoch in range(epochs):
 
   print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
   
+# Evaluation
+model.eval()
+correct = 0
+total = len(test_loader.dataset)
+
+for images, labels in test_loader:
+    pred = model(images.view(-1, 28*28))
+
+    # Postprocessing: hardmax is used for inference
+    _, y = torch.max(pred, 1)
+
+    # Accumulate the number of correct predictions
+    correct += (y == labels).sum().item()
+
+accuracy = 100 * correct / total
+print(f"Accuracy: {accuracy:.2f}% "
+      f"({correct}/{total} correct)")
+  
 # Save the model
 torch.save(model.state_dict(), "../models/simplecnn.pt")

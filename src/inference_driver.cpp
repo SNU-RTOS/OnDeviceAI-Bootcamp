@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
         // Preprocess input data
         cv::Mat preprocessed_image = 
-                util::preprocess_image_resnet(image, 224, 224);
+                util::preprocess_image(image, 28, 28);
 
         // Copy preprocessed_image to input_tensor
         float* input_tensor = interpreter->typed_input_tensor<float>(0);
@@ -156,12 +156,12 @@ int main(int argc, char *argv[])
         /* PostProcessing */
         // Get output tensor
         float *output_tensor = interpreter->typed_output_tensor<float>(0);
-        int num_classes = 1000; // Total 1000 classes
+        int num_classes = 10; // Total 10 classes
         std::vector<float> probs(num_classes);
         std::memcpy(probs.data(), output_tensor, sizeof(float) * num_classes);
 
         // Print Top-3 predictions every 10 iterations
-        if ((count + 1) % 10 == 0) {
+        if ((count + 1) % 10 != 10) {
             std::cout << "\n[INFO] Top 3 predictions for image index " << count << ":" 
             << std::endl;
             auto top_k_indices = util::get_topK_indices(probs, 3);

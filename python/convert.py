@@ -3,6 +3,7 @@ import torch
 from model import SimpleCNN
 import argparse
 
+# python -m onnx2tf -i simplecnn.onnx -o build_tflite
 
 def main():
     # Dummy input for error checking during conversion

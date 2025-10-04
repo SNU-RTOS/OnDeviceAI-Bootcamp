@@ -72,10 +72,18 @@ sudo apt install -y libopencv-dev libjsoncpp-dev
 
 # install python packages into virtual environment
 echo "[INFO] Installing Python packages into .venv..."
-pip install onnx
+pip install --upgrade "onnx=1.16.2" 
+pip install onnxsim onnx2tf
+pip install --upgrade onnx-graphsurgeon
+pip install --upgrade polygraphy
+pip install psutil
+pip install ai-edge-litert
+pip install sng4onnx
+pip install "tensorflow==2.17.0"
+pip install "tf-keras==2.17.0"
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-pip install ai-edge-torch
-pip install --upgrade ai-edge-torch
+# pip install ai-edge-torch
+# pip install --upgrade ai-edge-torch
 
 ######### Install Netron ##########
 pip install netron

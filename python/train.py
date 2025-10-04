@@ -57,4 +57,24 @@ print(f"Accuracy: {accuracy:.2f}% "
       f"({correct}/{total} correct)")
   
 # Save the model
-torch.save(model.state_dict(), "../models/simplecnn.pt")
+# Using ONNX
+# Dummy input (batch_size=1, 784 features for MNIST)
+dummy_input = torch.randn(1, 784)
+
+# Export to ONNX
+torch.onnx.export(
+    model, 
+    dummy_input, 
+    "../models/simplecnn.onnx",        # output filename
+    export_params=True,      # store trained parameter weights
+    opset_version=11,        # ONNX opset version
+    do_constant_folding=True, # optimize constant ops
+    input_names=['input'], 
+    output_names=['output'],
+    dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}} # allow variable batch
+)
+
+# Using torch pt
+# torch.save(model, "../models/simplecnn.pt")
+# Using torch state_dict, only saved weights and biases
+# torch.save(model.state_dict, "../models/simplecnn_state_dict.pt") 

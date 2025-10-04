@@ -11,3 +11,4 @@ models/*
 .vscode
 .env
 .venv/
+*copy*

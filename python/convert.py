@@ -1,7 +1,6 @@
-# Exporting to .tflite using ai-edge-torch
+# Converting .pt to .onnx
 import torch
 from model import SimpleCNN
-from ai_edge_torch import convert
 import argparse
 
 
@@ -17,12 +16,20 @@ def main():
     state = torch.load("../models/simplecnn_state_dict.pt", map_location=torch.device('cpu'))
     model.load_state_dict(state)
     # print(dir(model))
-    
-    output_path = "../models/simplecnn2.tflite"
-    edge_model = convert(model.eval(), example_input)
-    edge_model.export(output_path)
 
     print(f"TFLite model saved to: {output_path}")
+    torch.onnx.export(
+        model, 
+        dummy_input, 
+        "../models/simplecnn2.onnx",        # output filename
+        export_params=True,      # store trained parameter weights
+        opset_version=11,        # ONNX opset version
+        do_constant_folding=True, # optimize constant ops
+        input_names=['input'], 
+        output_names=['output'],
+        dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}} # allow variable batch
+    )
+
     
 if __name__ == "__main__":
     main()

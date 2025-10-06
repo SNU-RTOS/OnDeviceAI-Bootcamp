@@ -32,7 +32,6 @@ LDFLAGS := -Wl,-rpath=\$$ORIGIN/../lib \
 	-ltensorflowlite_gpu_delegate -lEGL -lGLESv2 \
 	-lopencv_core -lopencv_imgproc -lopencv_imgcodecs \
 	-ljsoncpp \
-	-lQnnTFLiteDelegate
 
 # Include directories
 INCS := -Iinc \

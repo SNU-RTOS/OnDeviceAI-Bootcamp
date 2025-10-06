@@ -22,14 +22,14 @@ transform = transforms.ToTensor()
 test_dataset = datasets.MNIST(root = '../data', train=False, download=True, transform=transform)
 
 labels = {}
-for i in range(len(test_dataset)):               # use range(200) for a small subset
+for i in range(len(test_dataset)):               
     img, label = test_dataset[i]                 # img: 1x28x28 tensor in [0,1]
-    fname = f"{i:05d}.png"
-    to_pil_image(img).save(os.path.join(out_dir, fname))
-    labels[fname] = int(label)
+    name = f"{i:05d}.png"
+    to_pil_image(img).save(os.path.join(out_dir, name))
+    labels[name] = int(label)
 
-with open(os.path.join(out_dir, "class_labels.json"), "w") as f:
+with open(os.path.join(out_dir, "data_labels.json"), "w") as f:
     json.dump(labels, f, indent=2)
 
 print("Wrote", len(labels), "images to", out_dir)
-print("Labels:", os.path.join(out_dir, "class_labels.json"))
+print("Labels:", os.path.join(out_dir, "data_labels.json"))

@@ -16,7 +16,7 @@ set -e  # Exit if any command fails
 
 # --------- CONFIGURATION ---------
 executable="./bin/inference_driver"
-model="./models/simplecnn.tflite"
+model="./models/build_tflite/simplednn_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
 base_images=(

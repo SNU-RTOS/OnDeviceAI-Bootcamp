@@ -1,3 +1,15 @@
+"""
+ * Filename: train.py
+ *
+ * @Author: Namcheol Lee
+ * @Affiliation: Real-Time Operating System Laboratory, Seoul National University
+ * @Created: 10/06/25
+ * @Contact: {nclee}@redwood.snu.ac.kr
+ *
+ * @Description: Trains a SimpleDNN and exports it into a .onnx file
+ *
+ """
+
 # Import PyTorch, nn, and, optim
 import torch
 import torch.nn as nn
@@ -21,7 +33,6 @@ model = SimpleDNN()
 # Create objects for backpropagation and gradient descent
 criterion = nn.CrossEntropyLoss() # Cross Entropy includes softmax
 optimizer = optim.SGD(model.parameters(), lr=1e-3)
-
 
 # Train
 epochs = 20

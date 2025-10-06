@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
         std::memcpy(probs.data(), output_tensor, sizeof(float) * num_classes);
 
         // Print Top-3 predictions every 10 iterations
-        if ((count + 1) % 10 != 10) {
+        if ((count + 1) % 10 == 0) {
             std::cout << "\n[INFO] Top 3 predictions for image index " << count << ":" 
             << std::endl;
             auto top_k_indices = util::get_topK_indices(probs, 3);

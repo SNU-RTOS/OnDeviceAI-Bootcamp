@@ -1,3 +1,15 @@
+"""
+ * Filename: prepare_test_data.py
+ *
+ * @Author: Namcheol Lee
+ * @Affiliation: Real-Time Operating System Laboratory, Seoul National University
+ * @Created: 10/06/25
+ * @Contact: {nclee}@redwood.snu.ac.kr
+ *
+ * @Description: Convert test data from .gz to .png
+ *
+ """
+
 from torchvision import datasets, transforms
 from torchvision.transforms.functional import to_pil_image
 import os, json

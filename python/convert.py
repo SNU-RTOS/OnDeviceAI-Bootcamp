@@ -1,36 +1,21 @@
-# Converting .pt to .onnx
-import torch
-from model import SimpleDNN
-import argparse
+"""
+ * Filename: convert.py
+ *
+ * @Author: Namcheol Lee
+ * @Affiliation: Real-Time Operating System Laboratory, Seoul National University
+ * @Created: 10/06/25
+ * @Contact: {nclee}@redwood.snu.ac.kr
+ *
+ * @Description: Converts .onnx to .tflite
+ *
+ """
+# Equivalent commnad: python -m onnx2tf -i simplecnn.onnx -o build_tflite
 
-# python -m onnx2tf -i simplecnn.onnx -o build_tflite
+from onnx2tf import convert
 
-def main():
-    # Dummy input for error checking during conversion
-    example_input = (torch.randn(1, 1, 784),)
-
-    # model = torch.load("../models/simplecnn.pt", map_location=torch.device('cpu'))
-    # print(dir(model))
-
-    # Alternatively, load the model using state_dict
-    model = SimpleDNN()
-    state = torch.load("../models/simplednn_state_dict.pt", map_location=torch.device('cpu'))
-    model.load_state_dict(state)
-    # print(dir(model))
-
-    print(f"TFLite model saved to: {output_path}")
-    torch.onnx.export(
-        model, 
-        dummy_input, 
-        "../models/simplednn2.onnx",        # output filename
-        export_params=True,      # store trained parameter weights
-        opset_version=11,        # ONNX opset version
-        do_constant_folding=True, # optimize constant ops
-        input_names=['input'], 
-        output_names=['output'],
-        dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}} # allow variable batch
-    )
-
-    
-if __name__ == "__main__":
-    main()
+convert(
+    input_onnx_file_path="../models/simplednn.onnx",
+    output_folder_path="../models/build_tflite",
+    copy_onnx_input_output_names_to_tflite=True,
+    non_verbose=False,
+)

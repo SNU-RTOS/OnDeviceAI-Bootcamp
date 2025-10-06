@@ -15,7 +15,7 @@ import torch
 import torch.nn as nn
 
 # Define simple DNN
-class SimpleDNN(nn.Module):
+class SimpleClassifier(nn.Module):
     def __init__(self):
         super().__init__()
         self.model = nn.Sequential(

@@ -1,6 +1,6 @@
 # Converting .pt to .onnx
 import torch
-from model import SimpleCNN
+from model import SimpleDNN
 import argparse
 
 # python -m onnx2tf -i simplecnn.onnx -o build_tflite
@@ -13,8 +13,8 @@ def main():
     # print(dir(model))
 
     # Alternatively, load the model using state_dict
-    model = SimpleCNN()
-    state = torch.load("../models/simplecnn_state_dict.pt", map_location=torch.device('cpu'))
+    model = SimpleDNN()
+    state = torch.load("../models/simplednn_state_dict.pt", map_location=torch.device('cpu'))
     model.load_state_dict(state)
     # print(dir(model))
 
@@ -22,7 +22,7 @@ def main():
     torch.onnx.export(
         model, 
         dummy_input, 
-        "../models/simplecnn2.onnx",        # output filename
+        "../models/simplednn2.onnx",        # output filename
         export_params=True,      # store trained parameter weights
         opset_version=11,        # ONNX opset version
         do_constant_folding=True, # optimize constant ops

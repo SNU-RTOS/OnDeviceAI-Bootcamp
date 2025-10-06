@@ -2,8 +2,8 @@
 import torch
 import torch.nn as nn
 
-# Define DNN for simple CNN
-class SimpleCNN2(nn.Module):
+# Define DNN for simple DNN
+class SimpleDNN2(nn.Module):
     def __init__(self):
       super().__init__()
       self.layer1 = nn.Linear(28*28, 128)
@@ -16,7 +16,7 @@ class SimpleCNN2(nn.Module):
       pred = self.output(a2)            # logits before either hardmax during inference or softmax in training
       return pred
 
-class SimpleCNN(nn.Module):
+class SimpleDNN(nn.Module):
     def __init__(self):
         super().__init__()
         self.model = nn.Sequential(

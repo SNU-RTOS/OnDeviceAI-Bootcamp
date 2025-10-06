@@ -14,9 +14,9 @@ test_data = datasets.MNIST(root = '../data', train=False, download=True, transfo
 test_loader = DataLoader(test_data, batch_size=64, shuffle=True) # An iterable of (batch of inputs, answers)
 
 # Create a model object
-from model import SimpleCNN
+from model import SimpleDNN
 
-model = SimpleCNN()
+model = SimpleDNN()
 
 # Create objects for backpropagation and gradient descent
 criterion = nn.CrossEntropyLoss() # Cross Entropy includes softmax
@@ -65,7 +65,7 @@ dummy_input = torch.randn(1, 784)
 torch.onnx.export(
     model, 
     dummy_input, 
-    "../models/simplecnn.onnx",        # output filename
+    "../models/simplednn.onnx",        # output filename
     export_params=True,      # store trained parameter weights
     opset_version=11,        # ONNX opset version
     do_constant_folding=True, # optimize constant ops
@@ -75,6 +75,6 @@ torch.onnx.export(
 )
 
 # Using torch pt
-# torch.save(model, "../models/simplecnn.pt")
+# torch.save(model, "../models/simplednn.pt")
 # Using torch state_dict, only saved weights and biases
-# torch.save(model.state_dict, "../models/simplecnn_state_dict.pt") 
+# torch.save(model.state_dict, "../models/simplednn_state_dict.pt") 

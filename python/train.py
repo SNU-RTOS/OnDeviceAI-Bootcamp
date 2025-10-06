@@ -35,7 +35,7 @@ criterion = nn.CrossEntropyLoss() # Cross Entropy includes softmax
 optimizer = optim.SGD(model.parameters(), lr=1e-3)
 
 # Train
-epochs = 20
+epochs = 1
 for epoch in range(epochs):
   for images, labels in train_loader:    # 60000 / 64 iterations in 1 epoch
     optimizer.zero_grad()
@@ -77,12 +77,8 @@ torch.onnx.export(
     model, 
     dummy_input, 
     "../models/simple_classifier.onnx",        # output filename
-    export_params=True,      # store trained parameter weights
-    opset_version=11,        # ONNX opset version
-    do_constant_folding=True, # optimize constant ops
     input_names=['input'], 
-    output_names=['output'],
-    dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}} # allow variable batch
+    output_names=['output']
 )
 
 # Using torch pt

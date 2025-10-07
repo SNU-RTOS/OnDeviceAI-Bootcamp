@@ -9,6 +9,10 @@
  * @Description: Trains a SimpleDNN and exports it into a .onnx file
  *
  """
+# Import warnings to ignore DeprecationWarning from torch.onnx
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning,
+                        message=".*legacy TorchScript-based ONNX export.*") 
 
 # Import PyTorch, nn, and, optim
 import torch
@@ -18,6 +22,9 @@ import torch.optim as optim
 # Load dataset from torchvision.datasets
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
+
+# Make directory for exported ONNX model
+import os
 
 transform = transforms.ToTensor()
 train_data = datasets.MNIST(root = '../data', train=True, download=True, transform=transform)
@@ -73,10 +80,11 @@ print(f"Accuracy: {accuracy:.2f}% "
 dummy_input = torch.randn(1, 784) # Generalize 할 수 있나?
 
 # Export to ONNX
+os.makedirs("./models", exist_ok=True)
 torch.onnx.export(
     model, 
     dummy_input, 
-    "../models/simple_classifier.onnx",        # output filename
+    "./models/simple_classifier.onnx",        # output filename
     input_names=['input'], 
     output_names=['output']
 )

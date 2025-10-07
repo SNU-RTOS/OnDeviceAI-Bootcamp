@@ -50,7 +50,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
     // (e.g., subgraphs, tensors, operators)
     const tflite::Model* model_root = model->GetModel();
     std::cout << "\nSchema version of the model: " << model_root->version() 
-    << "\nSupported schema version: " << TFLITE_SCHEMA_VERSION << std::endl;
+        << "\nSupported schema version: " << TFLITE_SCHEMA_VERSION << std::endl;
     if(model_root->version() != TFLITE_SCHEMA_VERSION) {
         std::cerr << "Unsupported Schema Version" << std::endl;
         exit(1);
@@ -87,7 +87,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
     std::cout << "Press Enter to continue...";
     std::cin.get();  // Wait for Enter
 
-    for( int i = 0; i < subGraphs->size(); i++){
+    for(int i = 0; i < subGraphs->size(); i++) {
         // Note: tflite::SubGraph is for FlatBuffer serialized subgraph info
         // and tflite::Subgraph is for subgraph class that the interpreter uses
         const tflite::SubGraph* subGraph = subGraphs->Get(i); // Gets the i th SubGraph of the model

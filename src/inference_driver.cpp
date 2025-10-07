@@ -29,11 +29,9 @@
  * Internal helpers: snake_case (e.g., typed_input_tensor)
  * ============================================================ */
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     /* Receive arguments */
-    if (argc < 5)
-    {
+    if (argc < 5) {
         std::cerr << "Usage: " << argv[0] 
             << "<model_path> <gpu_usage> <class_labels_path> <image_path 1> "
             << "[image_path 2 ... image_path N] [--input-period=milliseconds]"
@@ -45,7 +43,7 @@ int main(int argc, char *argv[])
 
     bool gpu_usage = false; // If true, GPU delegate is applied
     const std::string gpu_usage_str = argv[2];
-    if(gpu_usage_str == "true"){
+    if (gpu_usage_str == "true") {
         gpu_usage = true;
     }
     
@@ -57,17 +55,18 @@ int main(int argc, char *argv[])
     int input_period_ms = 0;            // Input period in milliseconds, default is 0 (no delay)
     for (int i = 4; i < argc; ++i) {
         std::string arg = argv[i];
-        if (arg.rfind("--input-period=", 0) == 0) // Check for input period argument
+        if (arg.rfind("--input-period=", 0) == 0) {
+            // Check for input period argument
             input_period_ms = std::stoi(arg.substr(15));
-        else 
+        } else {
             image_paths.push_back(arg);  // Assume it's an image path
+        } 
     }
     
     /* Load model */
     std::unique_ptr<tflite::FlatBufferModel> model = 
         tflite::FlatBufferModel::BuildFromFile(model_path.c_str());
-    if (!model)
-    {
+    if (!model) {
         std::cerr << "Failed to load model" << std::endl;
         return 1;
     }
@@ -77,8 +76,7 @@ int main(int argc, char *argv[])
     tflite::InterpreterBuilder builder(*model, resolver);
     std::unique_ptr<tflite::Interpreter> interpreter;
     builder(&interpreter);
-    if (!interpreter)
-    {
+    if (!interpreter) {
         std::cerr << "Failed to Initialize Interpreter" << std::endl;
         return 1;
     }
@@ -87,26 +85,27 @@ int main(int argc, char *argv[])
     TfLiteDelegate* xnn_delegate = TfLiteXNNPackDelegateCreate(nullptr);
     TfLiteDelegate* gpu_delegate = TfLiteGpuDelegateV2Create(nullptr);
     if(gpu_usage) {
-        if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk)
-        {
+        if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk) {
             // Delete unused delegate
-            if(xnn_delegate) TfLiteXNNPackDelegateDelete(xnn_delegate);
+            if(xnn_delegate) {
+                TfLiteXNNPackDelegateDelete(xnn_delegate);
+            }
         } else {
             std::cerr << "Failed to Apply GPU Delegate" << std::endl;
         }
     } else {
-        if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk)
-        {
+        if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk) {
             // Delete unused delegate
-            if(gpu_delegate) TfLiteGpuDelegateV2Delete(gpu_delegate);
+            if(gpu_delegate) {
+                TfLiteGpuDelegateV2Delete(gpu_delegate);
+            }
         } else {
             std::cerr << "Failed to Apply XNNPACK Delegate" << std::endl;
         }
     }
 
     /* Allocate Tensors */
-    if (interpreter->AllocateTensors() != kTfLiteOk)
-    {
+    if (interpreter->AllocateTensors() != kTfLiteOk) {
         std::cerr << "Failed to Allocate Tensors" << std::endl;
         return 1;
     }
@@ -144,8 +143,7 @@ int main(int argc, char *argv[])
 
         util::timer_start(inference_label);
         /* Inference */
-        if (interpreter->Invoke() != kTfLiteOk)
-        {
+        if (interpreter->Invoke() != kTfLiteOk) {
             std::cerr << "Failed to invoke the interpreter" << std::endl;
             return 1;
         }
@@ -164,8 +162,7 @@ int main(int argc, char *argv[])
             std::cout << "\n[INFO] Top 3 predictions for image index " << count << ":" 
             << std::endl;
             auto top_k_indices = util::get_topK_indices(probs, 3);
-            for (int idx : top_k_indices)
-            {
+            for (int idx : top_k_indices) {
                 std::string label = 
                     class_labels_map.count(idx) ? class_labels_map[idx] : "unknown";
                 std::cout << "- Class " << idx << " (" << label << "): " 

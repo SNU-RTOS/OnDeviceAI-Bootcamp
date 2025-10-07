@@ -72,7 +72,7 @@ sudo apt install -y libopencv-dev libjsoncpp-dev
 
 # install python packages into virtual environment
 echo "[INFO] Installing Python packages into .venv..."
-pip install --upgrade "onnx=1.16.2" 
+pip install --upgrade "onnx==1.16.2" 
 pip install onnxsim onnx2tf
 pip install --upgrade onnx-graphsurgeon
 pip install --upgrade polygraphy

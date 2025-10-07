@@ -39,7 +39,7 @@ epochs = 1
 for epoch in range(epochs):
   for images, labels in train_loader:    # 60000 / 64 iterations in 1 epoch
     optimizer.zero_grad()
-    pred = model(images.view(-1, 28*28)) # Flatten the input image
+    pred = model(images.view(images.size(0), -1)) # Flatten the input image
     loss = criterion(pred, labels)       # softmax is included in the loss function
     loss.backward()
     optimizer.step()

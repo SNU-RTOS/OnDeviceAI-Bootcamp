@@ -133,8 +133,7 @@ int main(int argc, char *argv[])
         }
 
         // Preprocess input data
-        cv::Mat preprocessed_image = 
-                util::preprocess_image(image, 28, 28);
+        cv::Mat preprocessed_image = util::preprocess_image(image, 28, 28);
 
         // Copy preprocessed_image to input_tensor
         float* input_tensor = interpreter->typed_input_tensor<float>(0);

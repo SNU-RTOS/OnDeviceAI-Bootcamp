@@ -55,7 +55,7 @@ correct = 0
 total = len(test_loader.dataset)
 
 for images, labels in test_loader:
-    pred = model(images.view(-1, 28*28))
+    pred = model(images.view(images.size(0), -1))
 
     # Postprocessing: hardmax is used for inference
     _, y = torch.max(pred, 1)
@@ -70,7 +70,7 @@ print(f"Accuracy: {accuracy:.2f}% "
 # Save the model
 # Using ONNX
 # Dummy input (batch_size=1, 784 features for MNIST)
-dummy_input = torch.randn(1, 784)
+dummy_input = torch.randn(1, 784) # Generalize 할 수 있나?
 
 # Export to ONNX
 torch.onnx.export(
@@ -80,8 +80,3 @@ torch.onnx.export(
     input_names=['input'], 
     output_names=['output']
 )
-
-# Using torch pt
-# torch.save(model, "../models/simple_classifier.pt")
-# Using torch state_dict, only saved weights and biases
-# torch.save(model.state_dict, "../models/simple_classifier_state_dict.pt") 

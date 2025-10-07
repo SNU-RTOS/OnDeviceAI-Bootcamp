@@ -82,8 +82,6 @@ pip install sng4onnx
 pip install "tensorflow==2.17.0"
 pip install "tf-keras==2.17.0"
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-# pip install ai-edge-torch
-# pip install --upgrade ai-edge-torch
 
 ######### Install Netron ##########
 pip install netron

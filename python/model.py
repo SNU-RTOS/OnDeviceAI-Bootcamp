@@ -10,7 +10,7 @@
  *
  """
 
-# Import PyTorch, nn, and, optim
+# Import PyTorch, nn
 import torch
 import torch.nn as nn
 

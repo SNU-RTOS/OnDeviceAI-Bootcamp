@@ -9,45 +9,47 @@
  * @Description: Trains a SimpleDNN and exports it into a .onnx file
  *
  """
+
 # Import warnings to ignore DeprecationWarning from torch.onnx
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning,
-                        message=".*legacy TorchScript-based ONNX export.*") 
+                        message=".*legacy TorchScript-based ONNX export.*")
 
 # Import PyTorch, nn, and, optim
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
-# Load dataset from torchvision.datasets
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
+# Import the model
+from model import SimpleClassifier
 
 # Make directory for exported ONNX model
 import os
 
+# Download MNIST dataset from torchvision
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
 transform = transforms.ToTensor()
-train_data = datasets.MNIST(root = '../data', train=True, download=True, transform=transform)
-train_loader = DataLoader(train_data, batch_size=64, shuffle=True) # An iterable of (batch of inputs, answers)
-test_data = datasets.MNIST(root = '../data', train=False, download=True, transform=transform)
-test_loader = DataLoader(test_data, batch_size=64, shuffle=True) # An iterable of (batch of inputs, answers)
+train_data = datasets.MNIST(root='../data', train=True, download=True, transform=transform)
+train_loader = DataLoader(train_data, batch_size=64, shuffle=True)
+test_data = datasets.MNIST(root='../data', train=False, download=True, transform=transform)
+test_loader = DataLoader(test_data, batch_size=64, shuffle=True)
 
 # Create a model object
-from model import SimpleClassifier
-
 model = SimpleClassifier()
 
 # Create objects for backpropagation and gradient descent
-criterion = nn.CrossEntropyLoss() # Cross Entropy includes softmax
+criterion = nn.CrossEntropyLoss()   # Cross Entropy includes softmax
 optimizer = optim.SGD(model.parameters(), lr=1e-3)
 
-# Train
-epochs = 1
+# Train the model
+epochs = 20
 for epoch in range(epochs):
-  for images, labels in train_loader:    # 60000 / 64 iterations in 1 epoch
+  for images, labels in train_loader:             # 60000 / 64 iterations in 1 epoch
     optimizer.zero_grad()
     pred = model(images.view(images.size(0), -1)) # Flatten the input image
-    loss = criterion(pred, labels)       # softmax is included in the loss function
+    loss = criterion(pred, labels)                # softmax + cross entropy loss
     loss.backward()
     optimizer.step()
 
@@ -56,7 +58,7 @@ for epoch in range(epochs):
 
   print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
   
-# Evaluation
+# Evaluate the model with the test dataset
 model.eval()
 correct = 0
 total = len(test_loader.dataset)
@@ -74,10 +76,10 @@ accuracy = 100 * correct / total
 print(f"Accuracy: {accuracy:.2f}% "
       f"({correct}/{total} correct)")
   
-# Save the model
-# Using ONNX
-# Dummy input (batch_size=1, 784 features for MNIST)
-dummy_input = torch.randn(1, 784) # Generalize 할 수 있나?
+# Prepare a dummy input for ONNX export
+sample_image, _ = train_data[0] 
+num_features = sample_image.numel() 
+dummy_input = torch.randn(1, num_features)
 
 # Export to ONNX
 os.makedirs("./models", exist_ok=True)
@@ -88,3 +90,5 @@ torch.onnx.export(
     input_names=['input'], 
     output_names=['output']
 )
+
+print("Successfully saved simple_classifier.onnx in ./models")

@@ -15,21 +15,19 @@
 #include "util.hpp"
 
 // Print the shape of a given TfLiteTensor
-void util::print_tensor_shape(const TfLiteTensor *tensor)
-{
+void util::print_tensor_shape(const TfLiteTensor *tensor) {
     printf("[");
-    for (int i = 0; i < tensor->dims->size; ++i)
-    {
+    for (int i = 0; i < tensor->dims->size; ++i) {
         printf("%d", tensor->dims->data[i]);
-        if (i < tensor->dims->size - 1)
+        if (i < tensor->dims->size - 1) {
             printf(", ");
+        }
     }
     printf("]");
 }
 
 // Print summary of the loaded TFLite model including tensor and node info
-void util::print_model_summary(tflite::Interpreter *interpreter, bool delegate_applied)
-{
+void util::print_model_summary(tflite::Interpreter *interpreter, bool delegate_applied) {
     printf("\n[INFO] Model Summary \n");
     printf("📥 Input tensor count  : %zu\n", interpreter->inputs().size());
     printf("📤 Output tensor count : %zu\n", interpreter->outputs().size());
@@ -39,8 +37,7 @@ void util::print_model_summary(tflite::Interpreter *interpreter, bool delegate_a
 }
 
 // Get indices of top-K elements from a float vector
-std::vector<int> util::get_topK_indices(const std::vector<float> &data, int k)
-{
+std::vector<int> util::get_topK_indices(const std::vector<float> &data, int k) {
     std::vector<int> indices(data.size());
     std::iota(indices.begin(), indices.end(), 0);
     std::partial_sort(
@@ -52,29 +49,23 @@ std::vector<int> util::get_topK_indices(const std::vector<float> &data, int k)
 }
 
 // Start timing for a given label
-void util::timer_start(const std::string &label)
-{
+void util::timer_start(const std::string &label) {
     util::timer_map[label] = util::TimerResult{util::Clock::now(), util::TimePoint{}, util::global_index++};
 }
 
 // Stop timing for a given label
-void util::timer_stop(const std::string &label)
-{
+void util::timer_stop(const std::string &label) {
     auto it = util::timer_map.find(label);
-    if (it != timer_map.end())
-    {
+    if (it != timer_map.end()) {
         it->second.end = Clock::now();
         it->second.stop_index = global_index++;
-    }
-    else
-    {
+    } else {
         std::cerr << "[WARN] No active timer for label: " << label << std::endl;
     }
 }
 
 // Print all timer results stored in timer_map
-void util::print_all_timers()
-{
+void util::print_all_timers() {
     std::vector<std::pair<std::string, util::TimerResult>> ordered(util::timer_map.begin(), util::timer_map.end());
     std::sort(ordered.begin(), ordered.end(),
               [](const auto &a, const auto &b)
@@ -83,10 +74,8 @@ void util::print_all_timers()
               });
 
     std::cout << "\n[INFO] Elapsed time summary" << std::endl;
-    for (const auto &[label, record] : ordered)
-    {
-        if (record.end != util::TimePoint{})
-        {
+    for (const auto &[label, record] : ordered) {
+        if (record.end != util::TimePoint{}) {
             auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(record.end - record.start).count();
             std::cout << "- " << label << " took " << ms << " ms" << std::endl;
         }
@@ -137,26 +126,25 @@ void util::print_throughput(const std::string &label, size_t num_inputs) {
 }
 
 // Load label file from JSON and return index → label map
-std::unordered_map<int, std::string> util::load_class_labels(const std::string &json_path)
-{
+std::unordered_map<int, std::string> util::load_class_labels(const std::string &json_path) {
     std::ifstream ifs(json_path, std::ifstream::binary);
-    if (!ifs.is_open())
+    if (!ifs.is_open()) {
         throw std::runtime_error("Failed to open label file: " + json_path);
-
+    }
+    
     Json::Value root;
     Json::CharReaderBuilder builder;
     std::string errs;
 
-    if (!Json::parseFromStream(builder, ifs, &root, &errs))
+    if (!Json::parseFromStream(builder, ifs, &root, &errs)) {
         throw std::runtime_error("Failed to parse JSON: " + errs);
+    }
 
     std::unordered_map<int, std::string> label_map;
 
-    for (const auto &key : root.getMemberNames())
-    {
+    for (const auto &key : root.getMemberNames()) {
         int idx = std::stoi(key);
-        if (root[key].isArray() && root[key].size() >= 2)
-        {
+        if (root[key].isArray() && root[key].size() >= 2) {
             label_map[idx] = root[key][1].asString(); // label = second element
         }
     }
@@ -165,12 +153,14 @@ std::unordered_map<int, std::string> util::load_class_labels(const std::string &
 }
 
 // Preprocess input image to match model input size (normalization, resize, etc.)
-cv::Mat util::preprocess_image(cv::Mat &image, int target_height, int target_width)
-{
+cv::Mat util::preprocess_image(cv::Mat &image, int target_height, int target_width) {
     // 1) Grayscale
     cv::Mat gray;
-    if (image.channels() == 3) cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
-    else                       gray = image;
+    if (image.channels() == 3) {
+        cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = image;
+    }                       
 
     // 2) Resize
     cv::Mat resized;
@@ -181,14 +171,15 @@ cv::Mat util::preprocess_image(cv::Mat &image, int target_height, int target_wid
     resized.convertTo(float_image, CV_32F, 1.0 / 255.0);
 
     // Ensure contiguous memory
-    if (!float_image.isContinuous()) float_image = float_image.clone();            // CV_32FC1, HxW
+    if (!float_image.isContinuous()) {
+        float_image = float_image.clone();            // CV_32FC1, HxW
+    }
 
     return float_image;
 }
 
 // Preprocess function specialized for ResNet-style preprocessing
-cv::Mat util::preprocess_image_resnet(cv::Mat &image, int target_height, int target_width)
-{
+cv::Mat util::preprocess_image_resnet(cv::Mat &image, int target_height, int target_width) {
     // Get original image dimensions
     int h = image.rows, w = image.cols;
 
@@ -217,8 +208,9 @@ cv::Mat util::preprocess_image_resnet(cv::Mat &image, int target_height, int tar
     const float mean[3] = {103.939f, 116.779f, 123.68f};
     std::vector<cv::Mat> channels(3);
     cv::split(float_image, channels);
-    for (int c = 0; c < 3; ++c)
+    for (int c = 0; c < 3; ++c) {
         channels[c] = channels[c] - mean[c];
+    }
     cv::merge(channels, float_image);
 
     // Return preprocessed image
@@ -226,19 +218,15 @@ cv::Mat util::preprocess_image_resnet(cv::Mat &image, int target_height, int tar
 }
 
 // Compute softmax probabilities from logits
-void util::softmax(const float *logits, std::vector<float> &probs, int size)
-{
+void util::softmax(const float *logits, std::vector<float> &probs, int size) {
     float max_val = *std::max_element(logits, logits + size);
     float sum = 0.0f;
-    for (int i = 0; i < size; ++i)
-    {
+    for (int i = 0; i < size; ++i) {
         probs[i] = std::exp(logits[i] - max_val);
         sum += probs[i];
     }
-    if (sum > 0.0f)
-    {
-        for (int i = 0; i < size; ++i)
-        {
+    if (sum > 0.0f) {
+        for (int i = 0; i < size; ++i) {
             probs[i] /= sum;
         }
     }
@@ -265,7 +253,9 @@ void util::print_top_predictions(const std::vector<float> &probs,
             std::cout << " (" << label_map.at(idx) << ")";
         }
 
-        if (show_softmax) std::cout << " : " << probs[idx];
+        if (show_softmax) {
+            std::cout << " : " << probs[idx];
+        }
         std::cout << std::endl;
     }
 }

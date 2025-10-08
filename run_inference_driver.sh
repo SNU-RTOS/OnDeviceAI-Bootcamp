@@ -19,35 +19,38 @@ executable="./bin/inference_driver"
 model="./models/tflite/simple_classifier_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
-base_images=(
-    "./data/MNIST/test/00000.png"
-    "./data/MNIST/test/00001.png"
-    "./data/MNIST/test/00002.png"
-    "./data/MNIST/test/00003.png"
-    "./data/MNIST/test/00004.png"
-    "./data/MNIST/test/00005.png"
-    "./data/MNIST/test/00006.png"
-    "./data/MNIST/test/00007.png"
-    "./data/MNIST/test/00008.png"
-    "./data/MNIST/test/00009.png"
-)
+base_dir="./data/MNIST/test"    
 input_period_ms=0
-total_inputs=100 # adjust as needed
+total_inputs=10000                
 # ---------------------------------
 
-# Sanity check for files
-for f in "$model" "${base_images[@]}"; do
-    if [ ! -f "$f" ]; then
-        echo "ERROR: File not found: $f"
+# Sanity check for files and directories
+if [ ! -f "$model" ]; then
+    echo "ERROR: Model file not found: $model"
+    exit 1
+fi
+
+if [ ! -d "$base_dir" ]; then
+    echo "ERROR: Image directory not found: $base_dir"
+    exit 1
+fi
+
+# Build image list dynamically
+images=()
+echo "Generating image list for the first $total_inputs images..."
+for ((i=0; i<total_inputs; i++)); do
+
+    # Format the filename with leading zeros
+    filename=$(printf "%05d.png" $i)
+    image_path="$base_dir/$filename"
+    
+    # Check if the image file exists
+    if [ ! -f "$image_path" ]; then
+        echo "ERROR: Image file not found: $image_path"
+        echo "Please check if 'total_inputs' exceeds the number of available images."
         exit 1
     fi
-done
-
-# Build repeated image list (round-robin)
-images=()
-for ((i=0; i<total_inputs; i++)); do
-    index=$(( i % ${#base_images[@]} ))
-    images+=("${base_images[$index]}")
+    images+=("$image_path")
 done
 
 # Build input-period argument
@@ -57,4 +60,6 @@ period_arg="--input-period=$input_period_ms"
 # echo "Running: $executable $model $gpu_usage $class_labels ${images[@]} $period_arg"
 
 # Run
+echo "Starting inference..."
 taskset -c 7-7 "$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}" "$period_arg"
+echo "Inference finished."

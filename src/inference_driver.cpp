@@ -8,7 +8,7 @@
  * @Modified by: Namcheol Lee on 08/06/25
  * @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
  *
- * @Description: Inference driver codes
+ * @Description: Inference driver for executing a TFLite model with delegate
  *
  */
 

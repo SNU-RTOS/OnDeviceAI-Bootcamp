@@ -84,10 +84,10 @@ int main(int argc, char *argv[]) {
     /* Apply either XNNPACK delegate or GPU delegate */
     TfLiteDelegate* xnn_delegate = TfLiteXNNPackDelegateCreate(nullptr);
     TfLiteDelegate* gpu_delegate = TfLiteGpuDelegateV2Create(nullptr);
-    if(gpu_usage) {
+    if (gpu_usage) {
         if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk) {
             // Delete unused delegate
-            if(xnn_delegate) {
+            if (xnn_delegate) {
                 TfLiteXNNPackDelegateDelete(xnn_delegate);
             }
         } else {
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     } else {
         if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk) {
             // Delete unused delegate
-            if(gpu_delegate) {
+            if (gpu_delegate) {
                 TfLiteGpuDelegateV2Delete(gpu_delegate);
             }
         } else {
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
         /* PostProcessing */
         // Get output tensor
         float *output_tensor = interpreter->typed_output_tensor<float>(0);
-        const int num_classes = 10; // Total 10 classes
+        int num_classes = 10; // Total 10 classes
 
         // Copy raw logits from the TFLite buffer to a C++ vector using memcpy
         std::vector<float> logits(num_classes);

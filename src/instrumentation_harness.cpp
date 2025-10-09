@@ -27,11 +27,9 @@
  * Internal helpers: snake_case (e.g., typed_input_tensor)
  * ============================================================ */
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     /* Receive user input */
-    if (argc < 2)
-    {
+    if (argc < 2) {
         std::cerr << "Usage: " << argv[0] 
                 << "<model_path> [gpu_usage]" // mandatory arguments
                 << std::endl;
@@ -41,17 +39,16 @@ int main(int argc, char *argv[])
     const std::string model_path = argv[1];
 
     bool gpu_usage = false; // If true, GPU delegate is applied
-    if(argc == 3) {
+    if (argc == 3) {
         const std::string gpu_usage_str = argv[2];
-        if(gpu_usage_str == "true"){
+        if (gpu_usage_str == "true") {
             gpu_usage = true;
         }
     }
 
     /* Load .tflite model */
     std::unique_ptr<tflite::FlatBufferModel> model = tflite::FlatBufferModel::BuildFromFile(model_path.c_str());
-    if (!model)
-    {
+    if (!model) {
         std::cerr << "Failed to load model" << std::endl;
         return 1;
     }
@@ -62,8 +59,7 @@ int main(int argc, char *argv[])
     tflite::InterpreterBuilder builder(*model, resolver);
     std::unique_ptr<tflite::Interpreter> interpreter;
     builder(&interpreter);
-    if (!interpreter)
-    {
+    if (!interpreter) {
         std::cerr << "Failed to Initialize Interpreter" << std::endl;
         return 1;
     }
@@ -74,18 +70,18 @@ int main(int argc, char *argv[])
     TfLiteDelegate* xnn_delegate = TfLiteXNNPackDelegateCreate(nullptr);
     TfLiteDelegate* gpu_delegate = TfLiteGpuDelegateV2Create(nullptr);
     bool delegate_applied = false;
-    if(gpu_usage) {
-        if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk)
-        {
+    if (gpu_usage) {
+        if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk) {
             delegate_applied = true;
             // Delete unused delegate
-            if(xnn_delegate) TfLiteXNNPackDelegateDelete(xnn_delegate);
+            if(xnn_delegate) {
+                TfLiteXNNPackDelegateDelete(xnn_delegate);
+            }
         } else {
             std::cerr << "Failed to Apply GPU Delegate" << std::endl;
         }
     } else {
-        if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk)
-        {
+        if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk) {
             delegate_applied = true;
             // Delete unused delegate
             if(gpu_delegate) TfLiteGpuDelegateV2Delete(gpu_delegate);
@@ -97,8 +93,7 @@ int main(int argc, char *argv[])
 
     /* Allocate Tensor */
     instrumentation::inspect_tensors(interpreter.get(), "Before Allocate Tensors");
-    if (interpreter->AllocateTensors() != kTfLiteOk)
-    {
+    if (interpreter->AllocateTensors() != kTfLiteOk) {
         std::cerr << "Failed to Allocate Tensors" << std::endl;
         return 1;
     }

@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
         /* PostProcessing */
         // Get output tensor
         float *output_tensor = interpreter->typed_output_tensor<float>(0);
-        int num_classes = 10; // Total 10 classes
+        const int num_classes = 10; // Total 10 classes
 
         // Copy raw logits from the TFLite buffer to a C++ vector using memcpy
         std::vector<float> logits(num_classes);

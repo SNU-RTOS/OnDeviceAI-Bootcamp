@@ -42,8 +42,8 @@ void inspect_model_loading() {
 
 /* Build Interpreter */
 void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
-                                    const tflite::ops::builtin::BuiltinOpResolver& resolver,
-                                    const tflite::Interpreter* interpreter) {
+                                       const tflite::ops::builtin::BuiltinOpResolver& resolver,
+                                       const tflite::Interpreter* interpreter) {
     // 1. Model Validation
     // Get the root object of the FlatBuffer model.
     // This provides access to the serialized model data
@@ -51,7 +51,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
     const tflite::Model* model_root = model->GetModel();
     std::cout << "\nSchema version of the model: " << model_root->version() 
         << "\nSupported schema version: " << TFLITE_SCHEMA_VERSION << std::endl;
-    if(model_root->version() != TFLITE_SCHEMA_VERSION) {
+    if (model_root->version() != TFLITE_SCHEMA_VERSION) {
         std::cerr << "Unsupported Schema Version" << std::endl;
         exit(1);
     }
@@ -64,15 +64,15 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
     std::cout << "\nTotal " << op_codes->size() << " operator codes in the model" << std::endl;
 
     for (int i = 0; i < op_codes->size(); i++) {
-        const auto* opcode = op_codes->Get(i); // The i th operator code in the op_codes
+        const auto* opcode = op_codes->Get(i);      // The i th operator code in the op_codes
         auto builtin_code = opcode->builtin_code(); // An enum indicating the type of the operator like CONV_2D, RELU, etc.
         std::string op_name = tflite::EnumNameBuiltinOperator(builtin_code);
-        int op_version = opcode->version(); // Version of the operator
+        int op_version = opcode->version();         // Version of the operator
         const TfLiteRegistration* reg = resolver.FindOp(builtin_code, op_version); // Checks whether the OpResolver supports the operator
         
         std::cout << "[" << i << "] " << op_name << ", version: " << op_version 
         << ", supported (Y/N): " << (reg ? "Y" : "N") << std::endl;
-        if(!reg) {
+        if (!reg) {
             std::cerr << "Unsupported opertor code exists in the model file" << std::endl;
             exit(1);
         }
@@ -87,7 +87,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
     std::cout << "Press Enter to continue...";
     std::cin.get();  // Wait for Enter
 
-    for(int i = 0; i < subGraphs->size(); i++) {
+    for (int i = 0; i < subGraphs->size(); i++) {
         // Note: tflite::SubGraph is for FlatBuffer serialized subgraph info
         // and tflite::Subgraph is for subgraph class that the interpreter uses
         const tflite::SubGraph* subGraph = subGraphs->Get(i); // Gets the i th SubGraph of the model
@@ -101,7 +101,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
         const auto* tensors = subGraph->tensors(); // Tensor data structure that contains shape, type, pointer to a buffer. Not shared across subgraphs
 
         std::cout << "Total " << tensors->size() << " tensors in SubGraph [" << i << "]" << std::endl;
-        for(int i = 0; i < tensors->size(); i++) {
+        for (int i = 0; i < tensors->size(); i++) {
             const auto* tensor = tensors->Get(i);
             int buffer_index = tensor->buffer();
             const auto* buffer = buffers->Get(buffer_index);
@@ -115,11 +115,12 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
             if (tensor->shape()) {
                 for (int d = 0; d < tensor->shape()->size(); ++d) {
                     std::cout << tensor->shape()->Get(d);
-                    if (d < tensor->shape()->size() - 1) std::cout << ", ";
+                    if (d < tensor->shape()->size() - 1) {
+                        std::cout << ", ";
+                    }
                 }
             }
-            std::cout << "]"
-                    << ", buffer = " << buffer_index;
+            std::cout << "]" << ", buffer = " << buffer_index;
 
             // Check if buffer contains actual data
             // If does it is a read-only tensor
@@ -140,7 +141,7 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
         // 3-3. Parses node information in the SubGraph, which is a vector of node indices in execution order
         const auto* operators = subGraph->operators(); // A vector that contains the operators of the subgraph in execution order
         std::cout << "\nTotal " << operators->size() << " nodes in SubGraph [" << i << "]" << std::endl;
-        for(int i = 0; i < operators->size(); i++) {
+        for (int i = 0; i < operators->size(); i++) {
             const auto* op = operators->Get(i); // Gets the i th operator in the vector
             int opcode_index = op->opcode_index(); // Gets the operator code of the operator
             const auto* opcode = op_codes->Get(opcode_index);
@@ -170,7 +171,8 @@ void inspect_interpreter_instantiation(const tflite::FlatBufferModel* model,
             }
             std::cout << "\n";
         }
-        if(i != 0) {
+
+        if (i != 0) {
             std::cout << "Press Enter to continue to next subgraph...";
             std::cin.get();  // Wait for Enter
         }
@@ -207,13 +209,13 @@ void inspect_interpreter(const tflite::Interpreter* interpreter) {
 std::unordered_set<int> used_tensor_indices; // for tensor allocation during allocate tensors
 void inspect_interpreter_with_delegate(const tflite::Interpreter* interpreter) {
     std::cout << "\nNumber of nodes of subgraph 0: " << interpreter->nodes_size() << std::endl;
-    for(int node_index = 0; node_index < interpreter->nodes_size(); node_index++) {
+    for (int node_index = 0; node_index < interpreter->nodes_size(); node_index++) {
         const auto* node_and_reg = interpreter->node_and_registration(node_index);
         const TfLiteRegistration& registration = node_and_reg->second;
 
         std::cout << "Node " << node_index << ": "
-        << tflite::EnumNameBuiltinOperator(static_cast<tflite::BuiltinOperator>(registration.builtin_code))
-        << std::endl;
+            << tflite::EnumNameBuiltinOperator(static_cast<tflite::BuiltinOperator>(registration.builtin_code))
+            << std::endl;
     }
     std::cout << "Press Enter to continue...";
     std::cin.get();  // Wait for Enter
@@ -292,9 +294,13 @@ void inspect_tensors(tflite::Interpreter* interpreter, const std::string& stage)
 
     std::cout << "\n==== " << stage << " ====" << std::endl;
     for (size_t i = 0; i < interpreter->tensors_size(); i++) {
-        if (!used_tensor_indices.count(i)) continue;  // Skip unused tensors
+        if (!used_tensor_indices.count(i)) {
+            continue;  // Skip unused tensors  
+        } 
         TfLiteTensor* tensor = interpreter->tensor(i);
-        if (!tensor) continue;
+        if (!tensor) {
+            continue;
+        }
 
         void* data_ptr = tensor->data.raw;  // Do NOT call typed_tensor before allocation
 

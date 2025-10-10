@@ -10,8 +10,11 @@
  *
  """
 
+# Import os to create directories
+import os
+
 # Import warnings to ignore DeprecationWarning
-import warnings
+import warnings  
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Import PyTorch, nn, and, optim
@@ -19,15 +22,13 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-# Import the model
-from model import SimpleClassifier
-
-# Make directory for exported ONNX model
-import os
-
 # Download MNIST dataset from torchvision
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
+
+# Import the model
+from model import SimpleClassifier
+
 
 transform = transforms.ToTensor()
 train_data = datasets.MNIST(root='../data', train=True, download=True, transform=transform)
@@ -45,18 +46,18 @@ optimizer = optim.SGD(model.parameters(), lr=1e-3)
 # Train the model
 epochs = 20
 for epoch in range(epochs):
-  for images, labels in train_loader:             # 60000 / 64 iterations in 1 epoch
-    optimizer.zero_grad()
-    pred = model(images.view(images.size(0), -1)) # Flatten the input image
-    loss = criterion(pred, labels)                # softmax + cross entropy loss
-    loss.backward()
-    optimizer.step()
+    for images, labels in train_loader:               # 60000 / 64 iterations in 1 epoch
+        optimizer.zero_grad()
+        pred = model(images.view(images.size(0), -1)) # Flatten the input image
+        loss = criterion(pred, labels)                # softmax + cross entropy loss
+        loss.backward()
+        optimizer.step()
 
-  if loss.item() < 0.5:
-    break
+    if loss.item() < 0.5:
+        break
 
   print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
-  
+
 # Evaluate the model with the test dataset
 model.eval()
 correct = 0

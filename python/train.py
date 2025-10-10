@@ -55,7 +55,7 @@ for epoch in range(epochs):
     if loss.item() < 0.5:
         break
 
-  print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
 
 # Evaluate the model with the test dataset
 model.eval()

@@ -21,7 +21,7 @@ gpu_usage="true"
 class_labels="class_labels.json"
 data_dir="./data/MNIST/test"    
 input_period_ms=0
-total_inputs=100                
+total_inputs=1000                
 # ---------------------------------
 
 # Sanity check for files and directories

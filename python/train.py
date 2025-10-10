@@ -10,10 +10,9 @@
  *
  """
 
-# Import warnings to ignore DeprecationWarning from torch.onnx
+# Import warnings to ignore DeprecationWarning
 import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning,
-                        message=".*legacy TorchScript-based ONNX export.*")
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Import PyTorch, nn, and, optim
 import torch

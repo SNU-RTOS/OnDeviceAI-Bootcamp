@@ -51,8 +51,8 @@ int main(int argc, char *argv[]) {
     const std::string class_labels_path = argv[3];
     auto class_labels_map = util::load_class_labels(class_labels_path.c_str());
 
-    std::vector<std::string> image_paths;    // List of input image paths
-    int input_period_ms = 0;            // Input period in milliseconds, default is 0 (no delay)
+    std::vector<std::string> image_paths;   // List of input image paths
+    int input_period_ms = 0;                // Input period in milliseconds, default is 0 (no delay)
     for (int i = 4; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg.rfind("--input-period=", 0) == 0) {

@@ -9,8 +9,6 @@
  * @Description: Converts .onnx to .tflite
  *
  """
-# Equivalent commnad (Under OnDeviceAI-Bootcamp/models): 
-# python -m onnx2tf -i ./models/simple_classifier.onnx -o ./models/tflite
 
 from onnx2tf import convert
 

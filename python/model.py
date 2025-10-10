@@ -24,7 +24,6 @@ class SimpleClassifier(nn.Module):
             nn.Linear(128, 64),
             nn.ReLU(),
             nn.Linear(64, 10)   # logits before either hardmax or softmax
-
         )
 
     def forward(self, x):

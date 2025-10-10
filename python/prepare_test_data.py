@@ -16,6 +16,7 @@ import json
 from torchvision import datasets, transforms
 from torchvision.transforms.functional import to_pil_image
 
+# OnDeviceAI-Bootcamp path/data
 root = "./data"                       # same root you used
 out_dir = "./data/MNIST/test"         # where to dump PNGs
 os.makedirs(out_dir, exist_ok=True)

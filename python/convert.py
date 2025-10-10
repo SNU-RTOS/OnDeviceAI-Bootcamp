@@ -10,11 +10,21 @@
  *
  """
 
+import argparse
 from onnx2tf import convert
 
-convert(
-    input_onnx_file_path="./models/simple_classifier.onnx",
-    output_folder_path="./models/tflite",
-    copy_onnx_input_output_names_to_tflite=True,
-    non_verbose=False,
-)
+def convert_onnx_to_tflite(onnx_path, output_dir):
+    convert(
+        input_onnx_file_path=args.onnx_path,
+        output_folder_path=args.output_dir,
+        copy_onnx_input_output_names_to_tflite=True,
+        non_verbose=False,
+    )
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Convert .onnx ONNX model to .tflite.")
+    parser.add_argument("--onnx-path", type=str , default="./models/simple_classifier.onnx", help="Path to the input .onnx model")
+    parser.add_argument("--output-dir", type=str , default="./models/tflite", help="Directory to save .tflite model")
+    args = parser.parse_args()
+
+    convert_onnx_to_tflite(args.onnx_path, args.output_dir)

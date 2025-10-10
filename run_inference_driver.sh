@@ -19,9 +19,9 @@ executable="./bin/inference_driver"
 model="./models/tflite/simple_classifier_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
-base_dir="./data/MNIST/test"    
+data_dir="./data/MNIST/test"    
 input_period_ms=0
-total_inputs=100                
+total_inputs=10000                
 # ---------------------------------
 
 # Sanity check for files and directories
@@ -30,8 +30,8 @@ if [ ! -f "$model" ]; then
     exit 1
 fi
 
-if [ ! -d "$base_dir" ]; then
-    echo "ERROR: Image directory not found: $base_dir"
+if [ ! -d "$data_dir" ]; then
+    echo "ERROR: Image directory not found: $data_dir"
     exit 1
 fi
 
@@ -42,7 +42,7 @@ for ((i=0; i<total_inputs; i++)); do
 
     # Format the filename with leading zeros
     filename=$(printf "%05d.png" $i)
-    image_path="$base_dir/$filename"
+    image_path="$data_dir/$filename"
     
     # Check if the image file exists
     if [ ! -f "$image_path" ]; then
@@ -55,9 +55,6 @@ done
 
 # Build input-period argument
 period_arg="--input-period=$input_period_ms"
-
-# Show the command
-# echo "Running: $executable $model $gpu_usage $class_labels ${images[@]} $period_arg"
 
 # Run
 echo "Starting inference..."

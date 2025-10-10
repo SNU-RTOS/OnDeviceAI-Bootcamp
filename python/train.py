@@ -81,11 +81,10 @@ num_features = sample_image.numel() # numel returns the total number of elements
 dummy_input = torch.randn(1, num_features)
 
 # Export to ONNX
-os.makedirs("./models", exist_ok=True)
 torch.onnx.export(
     model, 
     dummy_input, 
-    "./models/simple_classifier.onnx",        # output filename
+    "./models/simple_classifier.onnx",        # output .onnx file name
     input_names=['input'], 
     output_names=['output']
 )

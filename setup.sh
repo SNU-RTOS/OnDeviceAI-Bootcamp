@@ -85,3 +85,9 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
 ######### Install Netron ##########
 pip install netron
+
+# prepare test data for inference driver
+echo "[INFO] Preparing test data for inference driver..."
+python python/prepare_test_data.py
+
+echo "[INFO] All done!"

@@ -22,13 +22,12 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-# Download MNIST dataset from torchvision
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
-
 # Import the model
 from model import SimpleClassifier
 
+# Download MNIST dataset from torchvision
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
 
 transform = transforms.ToTensor()
 train_data = datasets.MNIST(root='../data', train=True, download=True, transform=transform)

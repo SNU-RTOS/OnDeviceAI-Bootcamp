@@ -31,10 +31,10 @@
 
 int main(int argc, char *argv[]) {
     /* Receive arguments */
-    if (argc < 5) {
+    if (argc < 4) {
         std::cerr << "Usage: " << argv[0] 
             << "<model_path> <gpu_usage> <class_labels_path> <image_path 1> "
-            << "[image_path 2 ... image_path N] [--input-period=milliseconds]"
+            << "[image_path 2 ... image_path N]"
             << std::endl;
         return 1;
     }
@@ -52,15 +52,9 @@ int main(int argc, char *argv[]) {
     auto class_labels_map = util::load_class_labels(class_labels_path.c_str());
 
     std::vector<std::string> image_paths;   // List of input image paths
-    int input_period_ms = 0;                // Input period in milliseconds, default is 0 (no delay)
     for (int i = 4; i < argc; ++i) {
         std::string arg = argv[i];
-        if (arg.rfind("--input-period=", 0) == 0) {
-            // Check for input period argument
-            input_period_ms = std::stoi(arg.substr(15));
-        } else {
-            image_paths.push_back(arg);  // Assume it's an image path
-        } 
+        image_paths.push_back(arg);    
     }
     
     /* Load model */
@@ -177,11 +171,7 @@ int main(int argc, char *argv[]) {
         util::timer_stop(postprocess_label);
         util::timer_stop(e2e_label);
 
-        // Sleep to control the input rate
-        // If next_wakeup_time is in the past, it will not sleep
-        next_wakeup_time += std::chrono::milliseconds(input_period_ms);
-        std::this_thread::sleep_until(next_wakeup_time);
-        ++count;
+        ++count; // Processed image count
     } while (count < image_paths.size());
     util::timer_stop("Total Latency");
 

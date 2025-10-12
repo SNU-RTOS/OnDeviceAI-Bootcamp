@@ -20,7 +20,6 @@ model="./models/tflite/simple_classifier_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
 data_dir="./data/MNIST/test"    
-input_period_ms=0
 total_inputs=1000                
 # ---------------------------------
 
@@ -53,10 +52,7 @@ for ((i=0; i<total_inputs; i++)); do
     images+=("$image_path")
 done
 
-# Build input-period argument
-period_arg="--input-period=$input_period_ms"
-
 # Run
 echo "Starting inference..."
-taskset -c 7-7 "$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}" "$period_arg"
+taskset -c 7-7 "$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}"
 echo "Inference finished."

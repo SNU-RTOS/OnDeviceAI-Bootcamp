@@ -33,5 +33,5 @@ for i in range(len(test_dataset)):
 with open(os.path.join(out_dir, "data_labels.json"), "w") as f:
     json.dump(labels, f, indent=2)
 
-print("Wrote", len(labels), "images to", out_dir)
+print("Saved", len(labels), "images to", out_dir)
 print("Labels:", os.path.join(out_dir, "data_labels.json"))

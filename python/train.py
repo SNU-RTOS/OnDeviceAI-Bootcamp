@@ -77,7 +77,7 @@ print(f"Accuracy: {accuracy:.2f}% "
   
 # Prepare a dummy input for ONNX export
 sample_image, _ = train_data[0] 
-num_features = sample_image.numel() # numel returns the total number of elements: C*H*W
+num_features = sample_image.numel() # numel returns the total number of features: C*H*W
 dummy_input = torch.randn(1, num_features)
 
 # Export to ONNX

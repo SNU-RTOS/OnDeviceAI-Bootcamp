@@ -6,7 +6,7 @@
  * @Created: 10/06/25
  * @Contact: {nclee}@redwood.snu.ac.kr
  *
- * @Description: Convert test data from .gz to .png
+ * @Description: Convert MNIST test dataset from .gz to .png
  *
  """
 
@@ -28,10 +28,5 @@ for i in range(len(test_dataset)):
     img, label = test_dataset[i]                 # img: 1x28x28 tensor in [0,1]
     name = f"{i:05d}.png"
     to_pil_image(img).save(os.path.join(out_dir, name))
-    labels[name] = int(label)
-
-with open(os.path.join(out_dir, "data_labels.json"), "w") as f:
-    json.dump(labels, f, indent=2)
 
 print("Saved", len(labels), "images to", out_dir)
-print("Labels:", os.path.join(out_dir, "data_labels.json"))

@@ -18,7 +18,8 @@ def convert_onnx_to_tflite(onnx_path, output_dir):
         input_onnx_file_path=args.onnx_path,
         output_folder_path=args.output_dir,
         copy_onnx_input_output_names_to_tflite=True,
-        non_verbose=False,
+        non_verbose=False,                              # True to reduce the output logs
+        not_use_onnxsim = True                          # True to skip onnx-simplifier
     )
 
 if __name__ == "__main__":

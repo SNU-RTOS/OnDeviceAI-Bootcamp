@@ -16,8 +16,8 @@ import json
 from torchvision import datasets, transforms
 from torchvision.transforms.functional import to_pil_image
 
-root = "./data"                       # same root you used
-out_dir = "./data/MNIST/test"         # where to dump PNGs
+root = "./data"                       
+out_dir = "./data/MNIST/test"         
 os.makedirs(out_dir, exist_ok=True)
 
 transform = transforms.ToTensor()
@@ -25,8 +25,8 @@ test_dataset = datasets.MNIST(root='./data', train=False, download=True, transfo
 
 labels = {}
 for i in range(len(test_dataset)):               
-    img, label = test_dataset[i]                 # img: 1x28x28 tensor in [0,1]
+    img, _ = test_dataset[i]                 # img: 1x28x28 tensor in [0,1]
     name = f"{i:05d}.png"
     to_pil_image(img).save(os.path.join(out_dir, name))
 
-print("Saved", len(labels), "images to", out_dir)
+print("Saved MNIST test dataset images to", out_dir)

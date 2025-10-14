@@ -19,8 +19,8 @@ def convert_onnx_to_litert(onnx_path, output_dir):
         output_folder_path=args.output_dir,
         copy_onnx_input_output_names_to_tflite=True,
         non_verbose=False,                              # Enable detailed output logs
-        not_use_onnxsim = True,                         # Disable onnx-simplifier tool
-        not_use_opname_auto_generate = True             # Disable automatic operation name generation
+        not_use_onnxsim=True,                           # Disable onnx-simplifier tool
+        not_use_opname_auto_generate=True               # Disable automatic operation name generation
     )
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@
 import argparse
 from onnx2tf import convert
 
-def convert_onnx_to_tflite(onnx_path, output_dir):
+def convert_onnx_to_litert(onnx_path, output_dir):
     convert(
         input_onnx_file_path=args.onnx_path,
         output_folder_path=args.output_dir,
@@ -26,7 +26,7 @@ def convert_onnx_to_tflite(onnx_path, output_dir):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert .onnx ONNX model to .tflite.")
     parser.add_argument("--onnx-path", type=str , default="./models/simple_classifier.onnx", help="Path to the input .onnx model")
-    parser.add_argument("--output-dir", type=str , default="./models/tflite", help="Directory to save .tflite model")
+    parser.add_argument("--output-dir", type=str , default="./models/litert", help="Directory to save LiteRT model")
     args = parser.parse_args()
 
-    convert_onnx_to_tflite(args.onnx_path, args.output_dir)
+    convert_onnx_to_litert(args.onnx_path, args.output_dir)

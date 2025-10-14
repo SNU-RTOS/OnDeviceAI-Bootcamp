@@ -8,7 +8,7 @@
 # @Created: 07/23/25
 # @Contact: {ghpark,thkim,nclee}@redwood.snu.ac.kr
 #
-# @Description: Script to run inference driver for RTCSA25 tutorial
+# @Description: Script to run inference driver for Ondevice AI Bootcamp.
 # 
 #-----------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ set -e  # Exit if any command fails
 
 # --------- CONFIGURATION ---------
 executable="./bin/inference_driver"
-model="./models/tflite/simple_classifier_float32.tflite"
+model="./models/litert/simple_classifier_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
 data_dir="./data/MNIST/test"    

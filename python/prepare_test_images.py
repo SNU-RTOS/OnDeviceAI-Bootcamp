@@ -25,8 +25,8 @@ test_dataset = datasets.MNIST(root='./data', train=False, download=True, transfo
 
 labels = {}
 for i in range(len(test_dataset)):               
-    img, _ = test_dataset[i]                 # img: 1x28x28 tensor in [0,1]
-    name = f"{i:05d}.png"
-    to_pil_image(img).save(os.path.join(out_dir, name))
+    img, _ = test_dataset[i]                            # img: 1x28x28 tensor in [0,1]
+    name = f"{i:05d}.png"                               # f"{i:05d}" turns i into a 5-digit string with zero padding, e.g., 0 -> "00000"
+    to_pil_image(img).save(os.path.join(out_dir, name)) # Convert tensor to PIL image and save as PNG
 
 print("Saved MNIST test dataset images to", out_dir)

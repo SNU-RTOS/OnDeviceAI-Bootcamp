@@ -54,5 +54,5 @@ done
 
 # Run
 echo "Starting inference..."
-taskset -c 7-7 "$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}"
+"$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}"
 echo "Inference finished."

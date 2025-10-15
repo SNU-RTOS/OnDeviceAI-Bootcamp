@@ -53,7 +53,6 @@ INST_HARNESS_SRCS := instrumentation_harness.cpp instrumentation_harness_utils.c
 # Map sources to objects
 INFERENCE_DRIVER_OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(INFERENCE_DRIVER_SRCS))
 INST_HARNESS_OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(INST_HARNESS_SRCS))
-PIPELINED_DRIVER_OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(PIPELINED_DRIVER_SRCS))
 
 # Final binaries
 INFERENCE_DRIVER_BIN := $(OUT_DIR)/inference_driver

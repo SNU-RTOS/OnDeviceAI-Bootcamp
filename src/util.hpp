@@ -65,26 +65,14 @@ namespace util
     // Stop timing for a given label
     void timer_stop(const std::string &label);
 
-    // Print all timer results stored in timer_map
-    void print_all_timers();
-
     // Calculate and print average latency for a given label
     void print_average_latency(const std::string &label);
 
     // Calculate and print throughput for a given label
     void print_throughput(const std::string &label, size_t num_inputs);
 
-    //*==========================================*/
-
     // Load class labels from a JSON file
-    // Expects format: { "0": ["n01440764", "tench"], ... }
     std::unordered_map<int, std::string> load_class_labels(const std::string &json_path);
-
-    // Print the shape of a given TfLiteTensor
-    void print_tensor_shape(const TfLiteTensor *tensor);
-
-    // Print summary of the loaded TFLite model including tensor and node info
-    void print_model_summary(tflite::Interpreter *interpreter, bool delegate_applied);
 
     // Get indices of top-K elements from a float vector
     std::vector<int> get_topK_indices(const std::vector<float> &data, int k);
@@ -94,18 +82,6 @@ namespace util
 
     // Preprocess input image to match model input size (normalization, resize, etc.)
     cv::Mat preprocess_image(cv::Mat &image, int target_height, int target_width);
-
-    // Preprocess function specialized for ResNet-style preprocessing
-    cv::Mat preprocess_image_resnet(cv::Mat &image, int target_height, int target_width);
-
-    // Print top predictions with labels and probabilities
-    void print_top_predictions(const std::vector<float> &probs, int num_classes, 
-                                int top_k, bool show_softmax, 
-                                const std::unordered_map<int, std::string> &label_map);
-
-    //*==========================================*/
-
-    void set_cpu_affinity(std::thread& th, int core_id);
 
 } // namespace util
 

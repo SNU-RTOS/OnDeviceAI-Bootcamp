@@ -20,9 +20,6 @@ SRC_DIR := src
 OBJ_DIR := obj
 OUT_DIR := bin
 
-# Executables
-TARGETS := inference_driver instrumentation_harness
-
 # Compiler & flags
 CXX := g++
 CXXFLAGS := -std=c++17 -O3 -w
@@ -59,7 +56,7 @@ INFERENCE_DRIVER_BIN := $(OUT_DIR)/inference_driver
 INST_HARNESS_BIN := $(OUT_DIR)/instrumentation_harness
 
 # ==============================
-# Build targets
+# Build
 # ==============================
 # Build all if no option is provided
 all: $(INFERENCE_DRIVER_BIN) $(INST_HARNESS_BIN)

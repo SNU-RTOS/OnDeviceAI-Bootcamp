@@ -24,12 +24,8 @@
 #include <cmath>
 #include <chrono>
 #include <string>
-#include <thread>
 #include <jsoncpp/json/json.h>
 #include <opencv2/opencv.hpp> //opencv
-#include "tflite/interpreter.h"
-#include "tflite/kernels/register.h"
-#include "tflite/model.h"
 
 namespace util
 {

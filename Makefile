@@ -69,7 +69,10 @@ all: $(INFERENCE_DRIVER_BIN) $(INST_HARNESS_BIN)
 
 # Optional single target build
 inference: $(INFERENCE_DRIVER_BIN)
+	@echo "Inference driver built successfully."
+
 internals: $(INST_HARNESS_BIN)
+	@echo "Instrumentation harness built successfully."
 
 # Build rules for each binary
 $(INFERENCE_DRIVER_BIN): $(INFERENCE_DRIVER_OBJS)

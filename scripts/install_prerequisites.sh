@@ -8,7 +8,7 @@
 # @Created: 07/23/25
 # @Original Work: Based on minimal-litert-c repository (https://github.com/SNU-RTOS/minimal-litert-c)
 # @Modified by: GeonhaPark on 08/26/25
-# @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
+# @Contact: nclee@redwood.snu.ac.kr
 #
 # @Description: Script for installing prerequisites
 #

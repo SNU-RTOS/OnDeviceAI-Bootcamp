@@ -6,7 +6,8 @@
 # @Author: Namcheol Lee
 # @Affiliation: Real-Time Operating System Laboratory, Seoul National University
 # @Created: 07/23/25
-# @Contact: {ghpark,thkim,nclee}@redwood.snu.ac.kr
+# @Modified by: Namcheol Lee, Taehyun Kim on 10/16/25
+# @Contact: nclee@redwood.snu.ac.kr
 #
 # @Description: Script to run inference driver for Ondevice AI Bootcamp.
 # 

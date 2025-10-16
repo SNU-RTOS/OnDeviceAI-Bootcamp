@@ -5,7 +5,7 @@
  * @Affiliation: Real-Time Operating System Laboratory, Seoul National University
  * @Created: 07/23/25
  * @Original Work: Based on minimal-litert-c repository (https://github.com/SNU-RTOS/minimal-litert-c)
- * @Modified by: Namcheol Lee on 08/06/25
+ * @Modified by: Namcheol Lee, Taehyun Kim on 10/16/25
  * @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
  *
  * @Description: Headers of utility functions

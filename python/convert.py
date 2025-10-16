@@ -4,7 +4,8 @@
  * @Author: Namcheol Lee
  * @Affiliation: Real-Time Operating System Laboratory, Seoul National University
  * @Created: 10/06/25
- * @Contact: {nclee}@redwood.snu.ac.kr
+ * @Modified by: Namcheol Lee, Taehyun Kim on 10/16/25
+ * @Contact: nclee@redwood.snu.ac.kr
  *
  * @Description: Converts .onnx to .tflite
  *

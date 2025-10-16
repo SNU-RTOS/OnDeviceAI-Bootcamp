@@ -34,7 +34,7 @@ if [ ! -d "$image_dir" ]; then
     exit 1
 fi
 
-# Build image list dynamically
+# Build list of image paths
 image_paths=()
 echo "Generating list of the first $total_inputs image paths..."
 for ((i=0; i<total_inputs; i++)); do

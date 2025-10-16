@@ -61,8 +61,6 @@ INST_HARNESS_BIN := $(OUT_DIR)/instrumentation_harness
 # ==============================
 # Build targets
 # ==============================
-.PHONY: all clean
-
 # Build all if no option is provided
 all: $(INFERENCE_DRIVER_BIN) $(INST_HARNESS_BIN)
 	@echo "Build completed successfully."

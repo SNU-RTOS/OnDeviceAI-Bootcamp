@@ -19,8 +19,8 @@ executable="./bin/inference_driver"
 model="./models/litert/simple_classifier_float32.tflite"
 gpu_usage="true"
 class_labels="class_labels.json"
-data_dir="./data/MNIST/test"    
-total_inputs=1000                
+image_dir="./data/MNIST/test"
+total_inputs=1000
 # ---------------------------------
 
 # Sanity check for files and directories
@@ -29,19 +29,19 @@ if [ ! -f "$model" ]; then
     exit 1
 fi
 
-if [ ! -d "$data_dir" ]; then
-    echo "ERROR: Image directory not found: $data_dir"
+if [ ! -d "$image_dir" ]; then
+    echo "ERROR: Image directory not found: $image_dir"
     exit 1
 fi
 
 # Build image list dynamically
-images=()
-echo "Generating image list for the first $total_inputs images..."
+image_paths=()
+echo "Generating list of the first $total_inputs image paths..."
 for ((i=0; i<total_inputs; i++)); do
 
     # Format the filename with leading zeros
     filename=$(printf "%05d.png" $i)
-    image_path="$data_dir/$filename"
+    image_path="$image_dir/$filename"
     
     # Check if the image file exists
     if [ ! -f "$image_path" ]; then
@@ -49,10 +49,10 @@ for ((i=0; i<total_inputs; i++)); do
         echo "Please check if 'total_inputs' exceeds the number of available images."
         exit 1
     fi
-    images+=("$image_path")
+    image_paths+=("$image_path")
 done
 
 # Run
 echo "Starting inference..."
-"$executable" "$model" "$gpu_usage" "$class_labels" "${images[@]}"
+"$executable" "$model" "$gpu_usage" "$class_labels" "${image_paths[@]}"
 echo "Inference finished."

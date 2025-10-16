@@ -74,11 +74,11 @@ internals: $(INST_HARNESS_BIN)
 # Build rules for each binary
 $(INFERENCE_DRIVER_BIN): $(INFERENCE_DRIVER_OBJS)
 	@mkdir -p $(OUT_DIR)
-	$(CXX) $(CXXFLAGS) $(INCS) $(LIBS) $^ -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(LIBS) $^ -o $@ $(LDFLAGS)
 
 $(INST_HARNESS_BIN): $(INST_HARNESS_OBJS)
 	@mkdir -p $(OUT_DIR)
-	$(CXX) $(CXXFLAGS) $(INCS) $(LIBS) $^ -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(LIBS) $^ -o $@ $(LDFLAGS)
 
 # Compile objects
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp

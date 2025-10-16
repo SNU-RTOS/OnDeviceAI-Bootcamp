@@ -6,7 +6,7 @@
  * @Created: 07/23/25
  * @Original Work: Based on minimal-litert-c repository (https://github.com/SNU-RTOS/minimal-litert-c)
  * @Modified by: Namcheol Lee, Taehyun Kim on 10/16/25
- * @Contact: {nclee,ghpark,thkim}@redwood.snu.ac.kr
+ * @Contact: nclee@redwood.snu.ac.kr
  *
  * @Description: Utility functions
  * 
@@ -24,16 +24,9 @@
 #include <cmath>
 #include <chrono>
 #include <string>
-#include <queue>
-#include <mutex>
-#include <condition_variable>
-#include <sched.h>
 #include <thread>
-#include <pthread.h>
-
 #include <jsoncpp/json/json.h>
 #include <opencv2/opencv.hpp> //opencv
-
 #include "tflite/interpreter.h"
 #include "tflite/kernels/register.h"
 #include "tflite/model.h"

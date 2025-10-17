@@ -64,7 +64,7 @@ all: $(INFERENCE_DRIVER_BIN) $(INST_HARNESS_BIN)
 inference: $(INFERENCE_DRIVER_BIN)
 	@echo "Inference driver built successfully."
 
-internals: $(INST_HARNESS_BIN)
+harness: $(INST_HARNESS_BIN)
 	@echo "Instrumentation harness built successfully."
 
 # Build rules for each binary

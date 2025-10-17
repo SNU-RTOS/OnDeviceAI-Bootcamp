@@ -19,12 +19,10 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Import PyTorch, nn, and, optim
-import torch
-import torch.nn as nn
-import torch.optim as optim
+
 
 # Import the model
-from model import SimpleClassifier
+
 
 # Download MNIST dataset from torchvision
 from torchvision import datasets, transforms
@@ -37,21 +35,21 @@ test_data = datasets.MNIST(root='./data', train=False, download=True, transform=
 test_loader = DataLoader(test_data, batch_size=64, shuffle=True)
 
 # Create a model object
-model = SimpleClassifier()
+model
 
 # Create objects for backpropagation and gradient descent
-criterion = nn.CrossEntropyLoss()   # Cross Entropy includes softmax
-optimizer = optim.SGD(model.parameters(), lr=1e-3)
+criterion = 
+optimizer = 
 
 # Train the model
 epochs = 20
 for epoch in range(epochs):
     for images, labels in train_loader:               # 60000 / 64 iterations in 1 epoch
-        optimizer.zero_grad()
-        pred = model(images.view(images.size(0), -1)) # Flatten the input image
-        loss = criterion(pred, labels)                # softmax + cross entropy loss
-        loss.backward()
-        optimizer.step()
+        # Write code for training
+        ## Hint: use ".view(images.size(0), -1)" to flatten the input images
+        
+        
+        
 
     if loss.item() < 0.5:
         break
@@ -64,10 +62,10 @@ correct = 0
 total = len(test_loader.dataset)
 
 for images, labels in test_loader:
-    pred = model(images.view(images.size(0), -1))
+    pred = 
 
     # Postprocessing: hardmax is used for inference
-    _, y = torch.max(pred, 1)
+    _, y = 
 
     # Accumulate the number of correct predictions
     correct += (y == labels).sum().item()
@@ -77,17 +75,17 @@ print(f"Accuracy: {accuracy:.2f}% "
       f"({correct}/{total} correct)")
   
 # Prepare a dummy input for ONNX export
-sample_image, _ = train_data[0] 
-num_features = sample_image.numel() # numel returns the total number of features: C*H*W
-dummy_input = torch.randn(1, num_features)
+sample_image, _ =
+num_features =               ## Hint: use ".numel()" to get the total number of features
+dummy_input = 
 
 # Export to ONNX
-torch.onnx.export(
-    model, 
-    dummy_input, 
-    "./models/simple_classifier.onnx",        # output .onnx file name
-    input_names=['input'], 
-    output_names=['output']
-)
+# Call torch.onnx.export
+
+
+
+
+
+
 
 print("Successfully saved simple_classifier.onnx in ./models")

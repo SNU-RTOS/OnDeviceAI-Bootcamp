@@ -12,17 +12,17 @@
  """
 
 import argparse
-from onnx2tf import convert
+# Import onnx2tf's convert function
 
 def convert_onnx_to_litert(onnx_path, output_dir):
-    convert(
-        input_onnx_file_path=args.onnx_path,
-        output_folder_path=args.output_dir,
-        copy_onnx_input_output_names_to_tflite=True,
-        non_verbose=False,                              # Enable detailed output logs
-        not_use_onnxsim=True,                           # Disable onnx-simplifier tool
-        not_use_opname_auto_generate=True               # Disable automatic operation name generation
-    )
+    # Write code to call convert function
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert .onnx ONNX model to .tflite.")

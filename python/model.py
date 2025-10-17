@@ -12,20 +12,11 @@
  """
 
 # Import PyTorch, nn
-import torch
-import torch.nn as nn
 
-# Define simple DNN
+# Define DNN for simple classifier
 class SimpleClassifier(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.model = nn.Sequential(
-            nn.Linear(28*28, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 10)   # logits before either hardmax or softmax
-        )
+    # Write code for def __init__()
+    def
 
-    def forward(self, x):
-        return self.model(x)
+    # Write code for forward()
+    def

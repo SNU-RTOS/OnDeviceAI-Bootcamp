@@ -58,51 +58,51 @@ int main(int argc, char *argv[]) {
     }
     
     /* Load model */
-    std::unique_ptr<tflite::FlatBufferModel> model = 
-        tflite::FlatBufferModel::BuildFromFile(model_path.c_str());
-    if (!model) {
-        std::cerr << "Failed to load model" << std::endl;
-        return 1;
-    }
+    // 1. Create a std::unique_ptr<tflite::FlatBufferModel> 
+    // ======= Write your code here =======
 
+
+
+
+    // ====================================
+    
     /* Build interpreter */
-    tflite::ops::builtin::BuiltinOpResolver resolver;
-    tflite::InterpreterBuilder builder(*model, resolver);
-    std::unique_ptr<tflite::Interpreter> interpreter;
-    builder(&interpreter);
-    if (!interpreter) {
-        std::cerr << "Failed to Initialize Interpreter" << std::endl;
-        return 1;
-    }
+    // 1. Create an OpResolver
+    // 2. Create an interpreter builder
+    // 3. Build an interpreter using the interpreter builder
+    // ======= Write your code here =======
+    
+
+
+    
+
+
+    // ====================================
 
     /* Apply either XNNPACK delegate or GPU delegate */
-    TfLiteDelegate* xnn_delegate = TfLiteXNNPackDelegateCreate(nullptr);
-    TfLiteDelegate* gpu_delegate = TfLiteGpuDelegateV2Create(nullptr);
-    if (gpu_usage) {
-        if (interpreter->ModifyGraphWithDelegate(gpu_delegate) == kTfLiteOk) {
-            // Delete unused delegate
-            if (xnn_delegate) {
-                TfLiteXNNPackDelegateDelete(xnn_delegate);
-            }
-        } else {
-            std::cerr << "Failed to Apply GPU Delegate" << std::endl;
-        }
-    } else {
-        if (interpreter->ModifyGraphWithDelegate(xnn_delegate) == kTfLiteOk) {
-            // Delete unused delegate
-            if (gpu_delegate) {
-                TfLiteGpuDelegateV2Delete(gpu_delegate);
-            }
-        } else {
-            std::cerr << "Failed to Apply XNNPACK Delegate" << std::endl;
-        }
+    // 1. Create a XNNPACK delegate
+    // 2. Create a GPU delegate 
+    // 3. Apply the delegate to the interpreter
+    // 4. Delete the unsed delegate
+    // ======= Write your code here =======
+    
+
+
+
+
+
+
+
+
+    
+    // ====================================
     }
 
     /* Allocate Tensors */
-    if (interpreter->AllocateTensors() != kTfLiteOk) {
-        std::cerr << "Failed to Allocate Tensors" << std::endl;
-        return 1;
-    }
+    // ======= Write your code here =======
+    
+    
+    // ====================================
 
     // Starting inference
     util::timer_start("Total Latency");
@@ -126,34 +126,35 @@ int main(int argc, char *argv[]) {
         }
 
         // Preprocess input data
-        cv::Mat preprocessed_image = util::preprocess_image(image, 28, 28);
+        // 1. call util::preprocess_image to flatten a image
+        // 2. Copy the preprocessed data to input tensor
+        // ======= Write your code here =======
 
-        // Copy preprocessed_image to input_tensor
-        float* input_tensor = interpreter->typed_input_tensor<float>(0);
-        std::memcpy(input_tensor, preprocessed_image.ptr<float>(), 
-                    preprocessed_image.total() * preprocessed_image.elemSize());
 
+
+        // ====================================
         util::timer_stop(preprocess_label);
 
         util::timer_start(inference_label);
         /* Inference */
-        if (interpreter->Invoke() != kTfLiteOk) {
-            std::cerr << "Failed to invoke the interpreter" << std::endl;
-            return 1;
-        }
+        // ======= Write your code here =======
+        
+
+
+        // ====================================
         util::timer_stop(inference_label);
 
         util::timer_start(postprocess_label);
         /* PostProcessing */
-        // Get output tensor
-        float *output_tensor = interpreter->typed_output_tensor<float>(0);
-        int num_classes = 10; // Total 10 classes
-        std::vector<float> logits(num_classes);
-        std::memcpy(logits.data(), output_tensor, sizeof(float) * num_classes);
+        // 1. Get output tensor
+        // 2. Apply softmax to get probabilities
+        // ======= Write your code here =======
+        
 
-        // Apply softmax
-        std::vector<float> probs(num_classes);
-        util::softmax(logits.data(), probs, num_classes);
+
+        
+        
+        // ====================================
 
         // Print Top-3 predictions every 10 iterations
         if ((count + 1) % 10 == 0) {

@@ -24,7 +24,6 @@ OUT_DIR := bin
 CXX := g++
 CXXFLAGS := -std=c++17 -O3 -w
 LDFLAGS := -Wl,-rpath=\$$ORIGIN/../lib \
-	-lpthread \
 	-ltensorflowlite \
 	-ltensorflowlite_gpu_delegate -lEGL -lGLESv2 \
 	-lopencv_core -lopencv_imgproc -lopencv_imgcodecs \

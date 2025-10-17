@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     /* Apply either XNNPACK delegate or GPU delegate */
     // 1. Create a XNNPACK delegate
     // 2. Create a GPU delegate 
-    // 3. Apply the delegate to the interpreter
+    // 3. Apply either XNNPACK or GPU delegate
     // 4. Delete the unsed delegate
     // ======= Write your code here =======
     

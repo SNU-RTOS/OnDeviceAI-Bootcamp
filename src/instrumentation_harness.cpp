@@ -19,7 +19,7 @@
 #include "tflite/interpreter_builder.h"
 #include "tflite/interpreter.h"
 #include "tflite/kernels/register.h"
-#include "tflite/model_builder.h"
+#include "tflite/model_builder.h" 
 #include "instrumentation_harness_utils.hpp"
 
 /* ============ Function Naming Convention of LiteRT ============

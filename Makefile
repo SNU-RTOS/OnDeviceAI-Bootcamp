@@ -42,9 +42,8 @@ LIBS := -Llib
 # ==============================
 # Source groups
 # ==============================
-COMMON_SRCS := util.cpp
-INFERENCE_DRIVER_SRCS := inference_driver.cpp $(COMMON_SRCS)
-INST_HARNESS_SRCS := instrumentation_harness.cpp instrumentation_harness_utils.cpp $(COMMON_SRCS)
+INFERENCE_DRIVER_SRCS := inference_driver.cpp util.cpp
+INST_HARNESS_SRCS := instrumentation_harness.cpp instrumentation_harness_utils.cpp
 
 # Map sources to objects
 INFERENCE_DRIVER_OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(INFERENCE_DRIVER_SRCS))

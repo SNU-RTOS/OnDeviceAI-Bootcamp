@@ -22,7 +22,7 @@ OUT_DIR := bin
 
 # Compiler & flags
 CXX := g++
-CXXFLAGS := -std=c++17 -O3 -w
+CXXFLAGS := -std=c++17 -w
 LDFLAGS := -Wl,-rpath=\$$ORIGIN/../lib \
 	-ltensorflowlite \
 	-ltensorflowlite_gpu_delegate -lEGL -lGLESv2 \
